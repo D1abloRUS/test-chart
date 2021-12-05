@@ -1,0 +1,16 @@
+{{- if .Values.configmap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test
+  labels:
+    helm.sh/chart: test
+    app.kubernetes.io/name: test
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+data:
+{{- range $path, $config := .Values.configmap }}
+  {{ $path }}: |
+{{ $config | indent 4 -}}
+{{- end -}}
+{{- end -}}
